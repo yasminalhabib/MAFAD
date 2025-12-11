@@ -11,7 +11,7 @@ import SwiftUI
 struct MAFADApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ReportInputView()
         }
     }
 }
