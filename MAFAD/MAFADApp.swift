@@ -12,6 +12,7 @@ struct MAFADApp: App {
     var body: some Scene {
         WindowGroup {
             ReportInputView()
+            
         }
     }
 }
