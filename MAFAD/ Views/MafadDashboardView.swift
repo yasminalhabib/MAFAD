@@ -1,27 +1,21 @@
+//
+//  MafadDashboardView.swift
+//  MAFAD
+//
+
 import SwiftUI
 
 struct MafadDashboardView: View {
     @State private var animateCards = false
-    @State private var isHomeHovered = false
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .trailing, spacing: 24) {
                     
-                    // 🔹 شريط الأدوات العلوي
-                    topNavigationBar
-                    
-                    // 🔹 العنوان الرئيسي للداشبورد
                     headerSection
-                    
-                    // 🔹 بطاقات الإحصائيات العلوية
                     cardsRow
-                    
-                    // 🔹 قسم الرسوم (اتجاه البلاغات + توزيع المخاطر)
                     chartsSection
-                    
-                    // 🔹 البطاقات السفلية (التنبيهات + خريطة التركّز + البلاغات غير المغلقة)
                     bottomSection
                 }
                 .padding(.horizontal, 20)
@@ -44,133 +38,10 @@ struct MafadDashboardView: View {
         .onAppear {
             animateCards = true
         }
-        .navigationBarBackButtonHidden(true)
     }
-}
-
-// MARK: - Top Navigation Bar
-
-private extension MafadDashboardView {
-    var topNavigationBar: some View {
-        HStack {
-            HStack(spacing: 12) {
-                ZStack {
-                    Circle()
-                        .fill(Color("greenmain"))
-                        .frame(width: 48, height: 48)
-                    Image(systemName: "shield.fill")
-                        .foregroundColor(.white)
-                        .font(.system(size: 22))
-                }
-                Text("مَفاد")
-                    .font(.system(size: 22, weight: .bold))
-                    .foregroundColor(Color("greenmain"))
-            }
-            
-            Spacer()
-            
-            // أيقونة الرئيسية - تنقل لصفحة إدخال رمز البلاغ
-            NavigationLink(destination: ReportInputView()) {
-                HStack(spacing: 8) {
-                    Image(systemName: "house")
-                        .font(.system(size: 16))
-                    Text("الرئيسية")
-                        .font(.system(size: 16))
-                }
-                .foregroundColor(.gray)
-                .scaleEffect(isHomeHovered ? 1.05 : 1.0)
-                .animation(.easeOut(duration: 0.2), value: isHomeHovered)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .onHover { isHomeHovered = $0 }
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-        .background(Color.white.opacity(0.7))
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.03), radius: 2, y: 1)
-        .cardAppear(index: 0, animate: animateCards)
-    }
-}
-
-// MARK: - Modifiers (Appear + Hover)
-
-struct CardAppearModifier: ViewModifier {
-    let index: Int
-    let animate: Bool
-    
-    func body(content: Content) -> some View {
-        content
-            .opacity(animate ? 1 : 0)
-            .offset(y: animate ? 0 : 20)
-            .animation(
-                .spring(response: 0.6, dampingFraction: 0.85)
-                    .delay(0.06 * Double(index)),
-                value: animate
-            )
-    }
-}
-
-struct HoverCardModifier: ViewModifier {
-    @State private var isHovering = false
-    
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content
-            .scaleEffect(isHovering ? 1.08 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isHovering)
-            .onHover { hovering in
-                isHovering = hovering
-            }
-        #else
-        content
-        #endif
-    }
-}
-
-extension View {
-    func cardAppear(index: Int, animate: Bool) -> some View {
-        self.modifier(CardAppearModifier(index: index, animate: animate))
-    }
-    
-    func hoverCard() -> some View {
-        self.modifier(HoverCardModifier())
-    }
-    
-    func dashboardCardStyle(cornerRadius: CGFloat = 24) -> some View {
-        self
-            .background(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color("mintcard"),
-                                Color.white.opacity(0.95)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .shadow(color: .black.opacity(0.08), radius: 10, x: 0, y: 5)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color("whitegreen").opacity(0.9), lineWidth: 1)
-            )
-    }
-}
-
-@ViewBuilder
-func dashboardCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-    VStack(alignment: .trailing, spacing: 12) {
-        content()
-    }
-    .padding(18)
-    .dashboardCardStyle(cornerRadius: 24)
 }
 
 // MARK: - Header
-
 private extension MafadDashboardView {
     var headerSection: some View {
         VStack(alignment: .trailing, spacing: 6) {
@@ -182,13 +53,13 @@ private extension MafadDashboardView {
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .cardAppear(index: 1, animate: animateCards)
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .opacity(animateCards ? 1 : 0)
+        .animation(.easeOut(duration: 0.6), value: animateCards)
     }
 }
 
-// MARK: - Top Stat Cards
-
+// MARK: - Top Cards
 private extension MafadDashboardView {
     var cardsRow: some View {
         HStack(spacing: 16) {
@@ -199,8 +70,9 @@ private extension MafadDashboardView {
                 iconName: "doc.text.fill",
                 tint: Color("greenmain")
             )
-            .hoverCard()
-            .cardAppear(index: 2, animate: animateCards)
+            .opacity(animateCards ? 1 : 0)
+            .offset(y: animateCards ? 0 : 20)
+            .animation(.spring(response: 0.6).delay(0.1), value: animateCards)
             
             StatCardView(
                 title: "حالات عالية الخطورة",
@@ -209,8 +81,9 @@ private extension MafadDashboardView {
                 iconName: "exclamationmark.triangle.fill",
                 tint: Color("redmain")
             )
-            .hoverCard()
-            .cardAppear(index: 3, animate: animateCards)
+            .opacity(animateCards ? 1 : 0)
+            .offset(y: animateCards ? 0 : 20)
+            .animation(.spring(response: 0.6).delay(0.2), value: animateCards)
             
             StatCardView(
                 title: "بلاغات غير مغلقة",
@@ -219,8 +92,9 @@ private extension MafadDashboardView {
                 iconName: "clock.fill",
                 tint: Color("yellowmain")
             )
-            .hoverCard()
-            .cardAppear(index: 4, animate: animateCards)
+            .opacity(animateCards ? 1 : 0)
+            .offset(y: animateCards ? 0 : 20)
+            .animation(.spring(response: 0.6).delay(0.3), value: animateCards)
             
             StatCardView(
                 title: "متوسط وقت الإغلاق",
@@ -229,14 +103,14 @@ private extension MafadDashboardView {
                 iconName: "chart.line.uptrend.xyaxis",
                 tint: Color("greenmain")
             )
-            .hoverCard()
-            .cardAppear(index: 5, animate: animateCards)
+            .opacity(animateCards ? 1 : 0)
+            .offset(y: animateCards ? 0 : 20)
+            .animation(.spring(response: 0.6).delay(0.4), value: animateCards)
         }
         .frame(maxWidth: .infinity)
     }
 }
 
-// 🔹 كرت إحصائي واحد يُستخدم في الشريط العلوي
 struct StatCardView: View {
     let title: String
     let value: String
@@ -300,18 +174,17 @@ struct StatCardView: View {
     }
 }
 
-// MARK: - Charts (Donut + Trend)
-
+// MARK: - Charts
 private extension MafadDashboardView {
     var chartsSection: some View {
         HStack(alignment: .top, spacing: 16) {
             trendCard
-                .hoverCard()
-                .cardAppear(index: 6, animate: animateCards)
+                .opacity(animateCards ? 1 : 0)
+                .animation(.easeOut(duration: 0.6).delay(0.5), value: animateCards)
             
             riskDistributionCard
-                .hoverCard()
-                .cardAppear(index: 7, animate: animateCards)
+                .opacity(animateCards ? 1 : 0)
+                .animation(.easeOut(duration: 0.6).delay(0.6), value: animateCards)
         }
         .frame(maxWidth: .infinity)
     }
@@ -433,27 +306,24 @@ private extension MafadDashboardView {
 }
 
 // MARK: - Bottom Section
-
 private extension MafadDashboardView {
     var bottomSection: some View {
         HStack(alignment: .top, spacing: 16) {
             UnclosedReportsCard()
-                .hoverCard()
-                .cardAppear(index: 8, animate: animateCards)
+                .opacity(animateCards ? 1 : 0)
+                .animation(.easeOut(duration: 0.6).delay(0.7), value: animateCards)
             
             FocusMapCard()
-                .hoverCard()
-                .cardAppear(index: 9, animate: animateCards)
+                .opacity(animateCards ? 1 : 0)
+                .animation(.easeOut(duration: 0.6).delay(0.8), value: animateCards)
             
             AlertsCard()
-                .hoverCard()
-                .cardAppear(index: 10, animate: animateCards)
+                .opacity(animateCards ? 1 : 0)
+                .animation(.easeOut(duration: 0.6).delay(0.9), value: animateCards)
         }
         .frame(maxWidth: .infinity)
     }
 }
-
-// MARK: - Unclosed Reports Card
 
 struct UnclosedReportsCard: View {
     let reports: [(days: Int, id: String, area: String)] = [
@@ -499,8 +369,6 @@ struct UnclosedReportsCard: View {
         }
     }
 }
-
-// MARK: - Focus Map Card
 
 struct FocusMapCard: View {
     @State private var animateBars = false
@@ -555,8 +423,6 @@ struct FocusMapCard: View {
     }
 }
 
-// MARK: - Alerts Card
-
 struct AlertsCard: View {
     let alerts = [
         ("ارتفاع ملحوظ في بلاغات التجمعات في شمال الرياض", "قبل 2 ساعة", "yellowmain"),
@@ -598,11 +464,41 @@ struct AlertsCard: View {
     }
 }
 
-// MARK: - Preview
-
-struct MafadDashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        MafadDashboardView()
-            .frame(width: 1200, height: 700)
+// MARK: - Helpers
+extension View {
+    func dashboardCardStyle(cornerRadius: CGFloat = 24) -> some View {
+        self
+            .background(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color("mintcard"),
+                                Color.white.opacity(0.95)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .shadow(color: .black.opacity(0.08), radius: 10, x: 0, y: 5)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color("whitegreen").opacity(0.9), lineWidth: 1)
+            )
     }
+}
+
+@ViewBuilder
+func dashboardCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+    VStack(alignment: .trailing, spacing: 12) {
+        content()
+    }
+    .padding(18)
+    .dashboardCardStyle(cornerRadius: 24)
+}
+
+#Preview {
+    MafadDashboardView()
+        .frame(width: 1200, height: 700)
 }

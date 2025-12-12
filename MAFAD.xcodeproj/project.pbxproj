@@ -24,14 +24,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		50A3DC0A2EE8708800B06130 /* MAFAD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MAFAD.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		50A3DC172EE8708900B06130 /* MAFADTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAFADTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		50A3DC212EE8708900B06130 /* MAFADUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAFADUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		642BC7182EEC414600A3A5FC /* MAFAD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MAFAD.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		642BC7192EEC414600A3A5FC /* MAFADTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAFADTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		642BC71A2EEC414600A3A5FC /* MAFADUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MAFADUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		642BC7112EEC2AC200A3A5FC /* Exceptions for "MAFAD" folder in "MAFAD" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				Models/Untitled.swift,
+			);
+			target = 50A3DC092EE8708800B06130 /* MAFAD */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		50A3DC0C2EE8708800B06130 /* MAFAD */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				642BC7112EEC2AC200A3A5FC /* Exceptions for "MAFAD" folder in "MAFAD" target */,
+			);
 			path = MAFAD;
 			sourceTree = "<group>";
 		};
@@ -78,18 +92,10 @@
 				50A3DC0C2EE8708800B06130 /* MAFAD */,
 				50A3DC1A2EE8708900B06130 /* MAFADTests */,
 				50A3DC242EE8708900B06130 /* MAFADUITests */,
-				50A3DC0B2EE8708800B06130 /* Products */,
+				642BC7182EEC414600A3A5FC /* MAFAD.app */,
+				642BC7192EEC414600A3A5FC /* MAFADTests.xctest */,
+				642BC71A2EEC414600A3A5FC /* MAFADUITests.xctest */,
 			);
-			sourceTree = "<group>";
-		};
-		50A3DC0B2EE8708800B06130 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				50A3DC0A2EE8708800B06130 /* MAFAD.app */,
-				50A3DC172EE8708900B06130 /* MAFADTests.xctest */,
-				50A3DC212EE8708900B06130 /* MAFADUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,7 +120,7 @@
 			packageProductDependencies = (
 			);
 			productName = MAFAD;
-			productReference = 50A3DC0A2EE8708800B06130 /* MAFAD.app */;
+			productReference = 642BC7182EEC414600A3A5FC /* MAFAD.app */;
 			productType = "com.apple.product-type.application";
 		};
 		50A3DC162EE8708900B06130 /* MAFADTests */ = {
@@ -137,7 +143,7 @@
 			packageProductDependencies = (
 			);
 			productName = MAFADTests;
-			productReference = 50A3DC172EE8708900B06130 /* MAFADTests.xctest */;
+			productReference = 642BC7192EEC414600A3A5FC /* MAFADTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		50A3DC202EE8708900B06130 /* MAFADUITests */ = {
@@ -160,7 +166,7 @@
 			packageProductDependencies = (
 			);
 			productName = MAFADUITests;
-			productReference = 50A3DC212EE8708900B06130 /* MAFADUITests.xctest */;
+			productReference = 642BC71A2EEC414600A3A5FC /* MAFADUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -196,7 +202,7 @@
 			mainGroup = 50A3DC012EE8708800B06130;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 50A3DC0B2EE8708800B06130 /* Products */;
+			productRefGroup = 50A3DC012EE8708800B06130;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -399,6 +405,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MAFAD/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "Allow Arbitrary Loads\n";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -445,6 +453,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MAFAD/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "Allow Arbitrary Loads\n";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;true/&gt;
+&lt;/plist&gt;
+Allow Arbitrary Loads</key>
+	<true/>
+	<key>Allow Arbitrary Loads</key>
+	<true/>
+	<key>App Transport Security Settings
+App Transport Security Settings
+App Transport Security Settings
+App Transport Security Settings
+</key>
+	<string></string>
+	<key>NSAppTransportSecurity</key>
+	<dict/>
+</dict>
+</plist>

@@ -1,20 +1,16 @@
 //
-//  AnalysisStep.swift
+//  AnalysisStepsView.swift
 //  MAFAD
-//
-//  Created by noura on 10/12/2025.
 //
 
 import SwiftUI
 
-// MARK: - Processing Animation View
 struct ProcessingCircle: View {
     @State private var rotation: Double = 0
     @State private var scale: CGFloat = 0.8
-    
+
     var body: some View {
         ZStack {
-            // Spinning arc
             Circle()
                 .trim(from: 0, to: 0.7)
                 .stroke(Color("MainColor"), style: StrokeStyle(lineWidth: 3, lineCap: .round))
@@ -25,8 +21,6 @@ struct ProcessingCircle: View {
                         rotation = 360
                     }
                 }
-            
-            // Pulsing center
             Circle()
                 .fill(Color("MainColor"))
                 .frame(width: 12, height: 12)
@@ -41,7 +35,6 @@ struct ProcessingCircle: View {
 }
 
 struct AnalysisStepsView: View {
-
     let reportName: String
     @State private var step = -1
     @State private var isHovering = false
@@ -63,42 +56,31 @@ struct AnalysisStepsView: View {
                 let maxCardWidth: CGFloat = min(520, geometry.size.width - 40)
                 ScrollView {
                     VStack(spacing: 30) {
-
-                        // Logo + Titles
                         VStack(spacing: 5) {
                             Image(systemName: "shield.fill")
                                 .resizable()
                                 .frame(width: 70, height: 70)
                                 .foregroundColor(Color("MainColor"))
-
                             Text("مَفاد")
                                 .font(.system(size: 28, weight: .bold))
-                                .foregroundColor(Color("MainColor"))
-
                             Text("Mafad")
                                 .font(.system(size: 18))
                                 .foregroundColor(.gray)
-                            
                             Text("جاري تحليل البلاغ")
                                 .font(.system(size: 25))
                         }
-                        .frame(maxWidth: .infinity, alignment: .center)
-
-                        // Report code - في الوسط
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("رمز البلاغ:")
+                        
+                        VStack(spacing: 4) {
+                            Text("رمز البلاغ :")
                                 .font(.system(size: 16, weight: .medium))
-                            
                             Text(reportName)
                                 .font(.system(size: 16))
                                 .foregroundColor(.gray)
                         }
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)
-
-                        // ----------- CARD -----------
+                        
                         ZStack(alignment: .topTrailing) {
-
                             RoundedRectangle(cornerRadius: 26)
                                 .fill(.white).opacity(0.35)
                                 .frame(width: maxCardWidth)
@@ -107,28 +89,11 @@ struct AnalysisStepsView: View {
                                     RoundedRectangle(cornerRadius: 26)
                                         .stroke(Color("MainColor").opacity(0.20), lineWidth: 1.2)
                                 )
-
+                            
                             VStack(alignment: .trailing, spacing: 36) {
                                 ForEach(steps.indices, id: \.self) { i in
                                     HStack(alignment: .center, spacing: 16) {
-
-                                        // ---- TEXTS - محاذاة يمينية ----
-                                        VStack(alignment: .trailing, spacing: 6) {
-                                            Text(steps[i].0)
-                                                .font(.system(size: 18, weight: .semibold))
-                                                .foregroundColor(Color("MainColor"))
-                                                .multilineTextAlignment(.trailing)
-
-                                            Text(steps[i].1)
-                                                .font(.system(size: 14))
-                                                .foregroundColor(.gray)
-                                                .multilineTextAlignment(.trailing)
-                                        }
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-
-                                        // ---- CIRCLE + LINE (على اليسار) ----
                                         ZStack {
-                                            // vertical line under circle
                                             if i < steps.count - 1 {
                                                 Rectangle()
                                                     .fill(step > i ? Color("MainColor") : Color("MainColor").opacity(0.3))
@@ -136,27 +101,22 @@ struct AnalysisStepsView: View {
                                                     .offset(x: 0, y: 42)
                                                     .animation(.easeInOut(duration: 0.5), value: step)
                                             }
-
-                                            // circle
+                                            
                                             ZStack {
-                                                // Empty circle (not started)
                                                 Circle()
                                                     .stroke(Color("MainColor").opacity(0.35), lineWidth: 3)
                                                     .frame(width: 52, height: 52)
-
-                                                // Processing animation (currently processing)
+                                                
                                                 if step == i {
                                                     ProcessingCircle()
                                                         .transition(.opacity)
                                                 }
                                                 
-                                                // Completed state (done)
                                                 if step > i {
                                                     Circle()
                                                         .fill(Color("MainColor"))
                                                         .frame(width: 52, height: 52)
                                                         .transition(.scale)
-
                                                     Image(systemName: "checkmark")
                                                         .font(.system(size: 19, weight: .bold))
                                                         .foregroundColor(.white)
@@ -165,11 +125,21 @@ struct AnalysisStepsView: View {
                                             }
                                         }
                                         .frame(width: 60)
-
-                                        Spacer(minLength: 20)
+                                        
+                                        VStack(alignment: .trailing, spacing: 6) {
+                                            Text(steps[i].0)
+                                                .font(.system(size: 18, weight: .semibold))
+                                                .foregroundColor(Color("MainColor"))
+                                                .multilineTextAlignment(.trailing)
+                                            Text(steps[i].1)
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.gray)
+                                                .multilineTextAlignment(.trailing)
+                                        }
+                                        Spacer(minLength: 0)
                                     }
-                                    .frame(maxWidth: maxCardWidth - 40, alignment: .trailing)
-                                    .padding(.horizontal, 20)
+                                    .frame(maxWidth: maxCardWidth - 8, alignment: .trailing)
+                                    .padding(.horizontal, 12)
                                 }
                             }
                             .padding(.vertical, 30)
@@ -178,13 +148,11 @@ struct AnalysisStepsView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.top, 10)
-
-                        // زر عرض النتائج
+                        
                         NavigationLink(destination: ReportResultsView()) {
                             HStack(spacing: 8) {
                                 Image(systemName: "arrow.left")
                                     .font(.system(size: 18, weight: .medium))
-                                
                                 Text("عرض النتائج")
                                     .font(.system(size: 20, weight: .medium))
                             }
@@ -204,7 +172,7 @@ struct AnalysisStepsView: View {
                         .onHover { hovering in
                             isHovering = hovering && step == steps.count - 1
                         }
-
+                        
                         Spacer(minLength: 40)
                     }
                     .frame(minHeight: geometry.size.height)
@@ -213,9 +181,10 @@ struct AnalysisStepsView: View {
             }
             .environment(\.layoutDirection, .rightToLeft)
         }
-        .navigationBarBackButtonHidden(true)
         .preferredColorScheme(.light)
-        .onAppear { animate() }
+        .onAppear {
+            animate()
+        }
     }
 
     func animate() {
@@ -230,5 +199,5 @@ struct AnalysisStepsView: View {
 }
 
 #Preview {
-    AnalysisStepsView(reportName: "#3042")
+    AnalysisStepsView(reportName: "3042#")
 }
