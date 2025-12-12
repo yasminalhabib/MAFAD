@@ -32,26 +32,26 @@ struct ReportInputView: View {
                     .font(.system(size: 28, weight: .semibold))
                     .padding()
                 // White Box
-            
-                    Text("ادخل رمز البلاغ لبدء التحليل")
-                        .font(.system(size: 12, weight: .medium))
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.gray)
-                        .padding(-25)
+                
+                Text("ادخل رمز البلاغ لبدء التحليل")
+                    .font(.system(size: 12, weight: .medium))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.gray)
+                    .padding(-25)
                 
                 
                 TextField("أدخل رمز البلاغ", text: $reportName)
-                                       .multilineTextAlignment(.center)
-                                       .font(.system(size: 14, weight: .medium))
-                                       .padding()
-                                       .frame(width: 300, height: 40) // ← نفس حجم زر “بدء التحليل”
-                                       .background(Color.white)
-                                       .overlay(
-                                           RoundedRectangle(cornerRadius: 25)
-                                               .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                                       )
-                        .padding()
-               
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 14, weight: .medium))
+                    .padding()
+                    .frame(width: 300, height: 40) // ← نفس حجم زر “بدء التحليل”
+                    .background(Color.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    )
+                    .padding()
+                
                 
                 // Button
                 Button {
@@ -72,19 +72,12 @@ struct ReportInputView: View {
                     AnalysisStepsView(reportName: reportName)
                 }
                 
-                Text("عرض البلاغات التي تم تحليلها ←")
-                    .font(.system(size: 12, weight: .medium))
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color("MainColor"))
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(20)
                 
+                
+                .preferredColorScheme(.light)
             }
-           
-            .preferredColorScheme(.light)
         }
-    }
-}
+    }}
 
 #Preview {
     ReportInputView()

@@ -7,10 +7,44 @@
 
 import SwiftUI
 
+// MARK: - Processing Animation View
+struct ProcessingCircle: View {
+    @State private var rotation: Double = 0
+    @State private var scale: CGFloat = 0.8
+    
+    var body: some View {
+        ZStack {
+            // Spinning arc
+            Circle()
+                .trim(from: 0, to: 0.7)
+                .stroke(Color("MainColor"), style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .frame(width: 52, height: 52)
+                .rotationEffect(.degrees(rotation))
+                .onAppear {
+                    withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                        rotation = 360
+                    }
+                }
+            
+            // Pulsing center
+            Circle()
+                .fill(Color("MainColor"))
+                .frame(width: 12, height: 12)
+                .scaleEffect(scale)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
+                        scale = 1.3
+                    }
+                }
+        }
+    }
+}
+
 struct AnalysisStepsView: View {
 
     let reportName: String
     @State private var step = -1
+    @State private var isHovering = false
     @Environment(\.dismiss) var dismiss
 
     let steps = [
@@ -29,17 +63,6 @@ struct AnalysisStepsView: View {
                 let maxCardWidth: CGFloat = min(520, geometry.size.width - 40)
                 ScrollView {
                     VStack(spacing: 30) {
-
-                        // Back button
-                        HStack {
-                            Button { dismiss() } label: {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 22, weight: .medium))
-                                    .foregroundColor(Color("MainColor"))
-                            }
-                            Spacer()
-                        }
-                        .padding(.horizontal, 20)
 
                         // Logo + Titles
                         VStack(spacing: 5) {
@@ -99,11 +122,19 @@ struct AnalysisStepsView: View {
 
                                             // circle
                                             ZStack {
+                                                // Empty circle (not started)
                                                 Circle()
                                                     .stroke(Color("MainColor").opacity(0.35), lineWidth: 3)
                                                     .frame(width: 52, height: 52)
 
-                                                if step >= i {
+                                                // Processing animation (currently processing)
+                                                if step == i {
+                                                    ProcessingCircle()
+                                                        .transition(.opacity)
+                                                }
+                                                
+                                                // Completed state (done)
+                                                if step > i {
                                                     Circle()
                                                         .fill(Color("MainColor"))
                                                         .frame(width: 52, height: 52)
@@ -144,17 +175,31 @@ struct AnalysisStepsView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.top, 10)
 
-                        // Show Results Button
-                        Button { } label: {
-                            Text("عرض النتائج ←")
-                                .font(.system(size: 20, weight: .medium))
-                                .frame(width: 320, height: 50)
-                                .background(Color("MainColor"))
-                                .foregroundColor(.white)
-                                .cornerRadius(25)
+                        // زر عرض النتائج
+                        NavigationLink(destination: ReportResultsView()) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "arrow.left")
+                                    .font(.system(size: 18, weight: .medium))
+                                
+                                Text("عرض النتائج")
+                                    .font(.system(size: 20, weight: .medium))
+                            }
+                            .foregroundColor(.white)
+                            .frame(width: 400, height: 50)
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(Color("MainColor"))
+                            )
+                            .shadow(color: Color("MainColor").opacity(0.3), radius: 8, y: 4)
+                            .scaleEffect(isHovering ? 1.08 : 1.0)
                         }
-                        .opacity(step == steps.count - 1 ? 1 : 0.3)
+                        .buttonStyle(PlainButtonStyle())
                         .disabled(step != steps.count - 1)
+                        .opacity(step == steps.count - 1 ? 1 : 0.3)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isHovering)
+                        .onHover { hovering in
+                            isHovering = hovering && step == steps.count - 1
+                        }
 
                         Spacer(minLength: 40)
                     }
@@ -179,3 +224,6 @@ struct AnalysisStepsView: View {
     }
 }
 
+#Preview {
+    AnalysisStepsView(reportName: "3042#")
+}
