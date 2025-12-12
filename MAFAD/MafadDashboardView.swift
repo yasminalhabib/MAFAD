@@ -1,12 +1,16 @@
 import SwiftUI
 
 struct MafadDashboardView: View {
-    @State private var animateCards = false   // أنيميشن لكل الكروت
+    @State private var animateCards = false
+    @State private var isHomeHovered = false
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .trailing, spacing: 24) {
+                    
+                    // 🔹 شريط الأدوات العلوي
+                    topNavigationBar
                     
                     // 🔹 العنوان الرئيسي للداشبورد
                     headerSection
@@ -36,10 +40,56 @@ struct MafadDashboardView: View {
                 .ignoresSafeArea()
             )
         }
-        .environment(\.layoutDirection, .rightToLeft) // من اليمين لليسار
+        .environment(\.layoutDirection, .rightToLeft)
         .onAppear {
             animateCards = true
         }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+// MARK: - Top Navigation Bar
+
+private extension MafadDashboardView {
+    var topNavigationBar: some View {
+        HStack {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Color("greenmain"))
+                        .frame(width: 48, height: 48)
+                    Image(systemName: "shield.fill")
+                        .foregroundColor(.white)
+                        .font(.system(size: 22))
+                }
+                Text("مَفاد")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(Color("greenmain"))
+            }
+            
+            Spacer()
+            
+            // أيقونة الرئيسية - تنقل لصفحة إدخال رمز البلاغ
+            NavigationLink(destination: ReportInputView()) {
+                HStack(spacing: 8) {
+                    Image(systemName: "house")
+                        .font(.system(size: 16))
+                    Text("الرئيسية")
+                        .font(.system(size: 16))
+                }
+                .foregroundColor(.gray)
+                .scaleEffect(isHomeHovered ? 1.05 : 1.0)
+                .animation(.easeOut(duration: 0.2), value: isHomeHovered)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .onHover { isHomeHovered = $0 }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 12)
+        .background(Color.white.opacity(0.7))
+        .cornerRadius(16)
+        .shadow(color: Color.black.opacity(0.03), radius: 2, y: 1)
+        .cardAppear(index: 0, animate: animateCards)
     }
 }
 
@@ -73,7 +123,7 @@ struct HoverCardModifier: ViewModifier {
                 isHovering = hovering
             }
         #else
-        content // على iOS ما فيه hover
+        content
         #endif
     }
 }
@@ -133,7 +183,7 @@ private extension MafadDashboardView {
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .cardAppear(index: 0, animate: animateCards)
+        .cardAppear(index: 1, animate: animateCards)
     }
 }
 
@@ -150,7 +200,7 @@ private extension MafadDashboardView {
                 tint: Color("greenmain")
             )
             .hoverCard()
-            .cardAppear(index: 1, animate: animateCards)
+            .cardAppear(index: 2, animate: animateCards)
             
             StatCardView(
                 title: "حالات عالية الخطورة",
@@ -160,7 +210,7 @@ private extension MafadDashboardView {
                 tint: Color("redmain")
             )
             .hoverCard()
-            .cardAppear(index: 2, animate: animateCards)
+            .cardAppear(index: 3, animate: animateCards)
             
             StatCardView(
                 title: "بلاغات غير مغلقة",
@@ -170,7 +220,7 @@ private extension MafadDashboardView {
                 tint: Color("yellowmain")
             )
             .hoverCard()
-            .cardAppear(index: 3, animate: animateCards)
+            .cardAppear(index: 4, animate: animateCards)
             
             StatCardView(
                 title: "متوسط وقت الإغلاق",
@@ -180,7 +230,7 @@ private extension MafadDashboardView {
                 tint: Color("greenmain")
             )
             .hoverCard()
-            .cardAppear(index: 4, animate: animateCards)
+            .cardAppear(index: 5, animate: animateCards)
         }
         .frame(maxWidth: .infinity)
     }
@@ -231,7 +281,7 @@ struct StatCardView: View {
                 } else {
                     Text("placeholder")
                         .font(.system(size: 12, weight: .medium))
-                        .opacity(0) // وهمي عشان نفس الارتفاع
+                        .opacity(0)
                 }
             }
             .padding(.vertical, 4)
@@ -257,11 +307,11 @@ private extension MafadDashboardView {
         HStack(alignment: .top, spacing: 16) {
             trendCard
                 .hoverCard()
-                .cardAppear(index: 5, animate: animateCards)
+                .cardAppear(index: 6, animate: animateCards)
             
             riskDistributionCard
                 .hoverCard()
-                .cardAppear(index: 6, animate: animateCards)
+                .cardAppear(index: 7, animate: animateCards)
         }
         .frame(maxWidth: .infinity)
     }
@@ -389,15 +439,15 @@ private extension MafadDashboardView {
         HStack(alignment: .top, spacing: 16) {
             UnclosedReportsCard()
                 .hoverCard()
-                .cardAppear(index: 7, animate: animateCards)
+                .cardAppear(index: 8, animate: animateCards)
             
             FocusMapCard()
                 .hoverCard()
-                .cardAppear(index: 8, animate: animateCards)
+                .cardAppear(index: 9, animate: animateCards)
             
             AlertsCard()
                 .hoverCard()
-                .cardAppear(index: 9, animate: animateCards)
+                .cardAppear(index: 10, animate: animateCards)
         }
         .frame(maxWidth: .infinity)
     }

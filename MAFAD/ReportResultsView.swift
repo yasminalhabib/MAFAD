@@ -28,7 +28,7 @@ struct ReportResultsView: View {
                                 .foregroundColor(.white)
                                 .font(.system(size: 22))
                         }
-                        Text("مفاد")
+                        Text("مَفاد")
                             .font(.system(size: 22, weight: .bold))
                             .foregroundColor(Color("MainColor"))
                     }
@@ -36,26 +36,34 @@ struct ReportResultsView: View {
                     Spacer()
                     
                     HStack(spacing: 32) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "house")
-                                .font(.system(size: 16))
-                            Text("الرئيسية")
-                                .font(.system(size: 16))
+                        // أيقونة الرئيسية - تنقل لصفحة إدخال رمز البلاغ
+                        NavigationLink(destination: ReportInputView()) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "house")
+                                    .font(.system(size: 16))
+                                Text("الرئيسية")
+                                    .font(.system(size: 16))
+                            }
+                            .foregroundColor(.gray)
+                            .scaleEffect(isHomeHovered ? 1.05 : 1.0)
+                            .animation(.easeOut(duration: 0.2), value: isHomeHovered)
                         }
-                        .foregroundColor(.gray)
-                        .scaleEffect(isHomeHovered ? 1.05 : 1.0)
-                        .animation(.easeOut(duration: 0.2), value: isHomeHovered)
+                        .buttonStyle(PlainButtonStyle())
                         .onHover { isHomeHovered = $0 }
                         
-                        HStack(spacing: 8) {
-                            Image(systemName: "chart.bar.fill")
-                                .font(.system(size: 16))
-                            Text("لوحة التحكم")
-                                .font(.system(size: 16))
+                        // أيقونة لوحة التحكم - تنقل لصفحة Dashboard
+                        NavigationLink(destination: MafadDashboardView()) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "chart.bar.fill")
+                                    .font(.system(size: 16))
+                                Text("لوحة التحكم")
+                                    .font(.system(size: 16))
+                            }
+                            .foregroundColor(.gray)
+                            .scaleEffect(isDashboardHovered ? 1.05 : 1.0)
+                            .animation(.easeOut(duration: 0.2), value: isDashboardHovered)
                         }
-                        .foregroundColor(.gray)
-                        .scaleEffect(isDashboardHovered ? 1.05 : 1.0)
-                        .animation(.easeOut(duration: 0.2), value: isDashboardHovered)
+                        .buttonStyle(PlainButtonStyle())
                         .onHover { isDashboardHovered = $0 }
                     }
                 }
@@ -140,13 +148,13 @@ struct ReportResultsView: View {
                         .padding(.horizontal, 32)
                         
                         VStack(spacing: 0) {
-                            SimilarRowView(percent: "92%", id: "2847#", desc: "تجمع غير مرخص", date: "10-01-2024")
+                            SimilarRowView(percent: "92%", id: "#2847", desc: "تجمع غير مرخص", date: "10-01-2024")
                             Divider().padding(.horizontal, 20)
-                            SimilarRowView(percent: "87%", id: "2651#", desc: "إزعاج عام", date: "05-01-2024")
+                            SimilarRowView(percent: "87%", id: "#2651", desc: "إزعاج عام", date: "05-01-2024")
                             Divider().padding(.horizontal, 20)
-                            SimilarRowView(percent: "78%", id: "2490#", desc: "مخالفة بنائية", date: "28-12-2023")
+                            SimilarRowView(percent: "78%", id: "#2490", desc: "مخالفة بنائية", date: "28-12-2023")
                             Divider().padding(.horizontal, 20)
-                            SimilarRowView(percent: "71%", id: "2312#", desc: "تجمع غير مرخص", date: "15-12-2023")
+                            SimilarRowView(percent: "71%", id: "#2312", desc: "تجمع غير مرخص", date: "15-12-2023")
                         }
                         .padding(.vertical, 20)
                         .background(
@@ -165,7 +173,7 @@ struct ReportResultsView: View {
                         VStack(alignment: .trailing, spacing: 16) {
                             HStack {
                                 Spacer()
-                                Text("الشذوذات المكتشفة")
+                                Text("التنبيهات المكتشفة")
                                     .font(.system(size: 18, weight: .bold))
                                 Image(systemName: "exclamationmark.triangle.fill")
                                     .font(.system(size: 18))
@@ -243,6 +251,7 @@ struct ReportResultsView: View {
             showCards = true
         }
         .environment(\.layoutDirection, .rightToLeft)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

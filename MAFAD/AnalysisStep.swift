@@ -73,24 +73,27 @@ struct AnalysisStepsView: View {
 
                             Text("مَفاد")
                                 .font(.system(size: 28, weight: .bold))
+                                .foregroundColor(Color("MainColor"))
 
                             Text("Mafad")
                                 .font(.system(size: 18))
                                 .foregroundColor(.gray)
+                            
                             Text("جاري تحليل البلاغ")
                                 .font(.system(size: 25))
                         }
+                        .frame(maxWidth: .infinity, alignment: .center)
 
-                        // Report code centered
-                        VStack(spacing: 4) {
-                            Text("رمز البلاغ :")
+                        // Report code - في الوسط
+                        VStack(alignment: .center, spacing: 4) {
+                            Text("رمز البلاغ:")
                                 .font(.system(size: 16, weight: .medium))
                             
                             Text(reportName)
                                 .font(.system(size: 16))
                                 .foregroundColor(.gray)
                         }
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.vertical, 10)
 
                         // ----------- CARD -----------
@@ -109,7 +112,21 @@ struct AnalysisStepsView: View {
                                 ForEach(steps.indices, id: \.self) { i in
                                     HStack(alignment: .center, spacing: 16) {
 
-                                        // ---- CIRCLE + LINE (RIGHT) ----
+                                        // ---- TEXTS - محاذاة يمينية ----
+                                        VStack(alignment: .trailing, spacing: 6) {
+                                            Text(steps[i].0)
+                                                .font(.system(size: 18, weight: .semibold))
+                                                .foregroundColor(Color("MainColor"))
+                                                .multilineTextAlignment(.trailing)
+
+                                            Text(steps[i].1)
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.gray)
+                                                .multilineTextAlignment(.trailing)
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .trailing)
+
+                                        // ---- CIRCLE + LINE (على اليسار) ----
                                         ZStack {
                                             // vertical line under circle
                                             if i < steps.count - 1 {
@@ -149,23 +166,10 @@ struct AnalysisStepsView: View {
                                         }
                                         .frame(width: 60)
 
-                                        // ---- TEXTS NEXT TO CIRCLE ----
-                                        VStack(alignment: .trailing, spacing: 6) {
-                                            Text(steps[i].0)
-                                                .font(.system(size: 18, weight: .semibold))
-                                                .foregroundColor(Color("MainColor"))
-                                                .multilineTextAlignment(.trailing)
-
-                                            Text(steps[i].1)
-                                                .font(.system(size: 14))
-                                                .foregroundColor(.gray)
-                                                .multilineTextAlignment(.trailing)
-                                        }
-
-                                        Spacer(minLength: 0)
+                                        Spacer(minLength: 20)
                                     }
-                                    .frame(maxWidth: maxCardWidth - 8, alignment: .trailing)
-                                    .padding(.horizontal, 12)
+                                    .frame(maxWidth: maxCardWidth - 40, alignment: .trailing)
+                                    .padding(.horizontal, 20)
                                 }
                             }
                             .padding(.vertical, 30)
@@ -209,6 +213,7 @@ struct AnalysisStepsView: View {
             }
             .environment(\.layoutDirection, .rightToLeft)
         }
+        .navigationBarBackButtonHidden(true)
         .preferredColorScheme(.light)
         .onAppear { animate() }
     }
@@ -225,5 +230,5 @@ struct AnalysisStepsView: View {
 }
 
 #Preview {
-    AnalysisStepsView(reportName: "3042#")
+    AnalysisStepsView(reportName: "#3042")
 }
